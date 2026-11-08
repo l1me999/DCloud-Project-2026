@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DCloud — демонстрация интерфейса</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">DCLOUD</p>
+          <h1>Децентрализованное облачное хранилище</h1>
+        </div>
+        <div class="status-pill" data-state="ok">
+          <span class="dot"></span><span>Демо-режим</span>
+        </div>
+      </header>
+
+      <div class="demo-banner">
+        GitHub Pages · статическая демонстрация интерфейса. Загрузка, скачивание и узлы имитируются; полная версия запускается локально по README.
+      </div>
+
+      <main class="layout">
+        <div class="column">
+          <section class="panel">
+            <div class="panel-head">
+              <h2>Загрузка файла</h2>
+              <span class="hint">AES-256-GCM · 3 реплики</span>
+            </div>
+
+            <form id="upload-form" novalidate>
+              <label id="drop-zone" class="drop-zone" for="file-input">
+                <input id="file-input" type="file" hidden>
+                <span class="drop-icon">↑</span>
+                <span class="drop-title">Перетащите файл или выберите</span>
+                <span class="drop-hint">до 20 МБ · txt, pdf, png, jpg, zip, docx</span>
+              </label>
+
+              <div id="file-meta" class="file-meta hidden">
+                <span id="file-name"></span>
+                <span id="file-size" class="muted"></span>
+              </div>
+              <div id="upload-error" class="error hidden" role="alert"></div>
+
+              <div id="progress-wrap" class="progress-wrap hidden">
+                <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+                <span id="progress-label">0%</span>
+              </div>
+
+              <div class="actions">
+                <button id="upload-btn" class="primary" type="submit" disabled>Загрузить</button>
+                <button id="cancel-btn" class="secondary hidden" type="button">Отменить</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <h2>Узлы хранения</h2>
+              <div class="actions-inline">
+                <button id="reset-demo" class="ghost" type="button">Сбросить демо</button>
+                <button id="refresh-nodes" class="ghost" type="button">Обновить</button>
+              </div>
+            </div>
+            <div id="nodes-list" class="nodes-list"></div>
+          </section>
+        </div>
+
+        <section class="panel files-panel">
+          <div class="panel-head files-head">
+            <div>
+              <h2>Файлы</h2>
+              <p class="hint" id="files-count">0 файлов</p>
+            </div>
+            <div class="filters">
+              <input id="search" type="search" placeholder="Поиск по имени…" autocomplete="off">
+              <select id="filter-status" aria-label="Фильтр по статусу">
+                <option value="all">Все статусы</option>
+                <option value="encrypted">Зашифрован</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="files-list" class="files-list"></div>
+          <div id="empty-state" class="empty hidden">
+            <div class="empty-icon">☁</div>
+            <h3>Хранилище пустое</h3>
+            <p>Загрузите первый файл — он будет зашифрован и разложен на три реплики по разным узлам.</p>
+            <button id="empty-upload" class="primary" type="button">Загрузить файл</button>
+          </div>
+          <div id="files-error" class="error hidden" role="alert"></div>
+        </section>
+      </main>
+    </div>
+
+    <div id="details-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="details-title">
+      <div class="modal-card">
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">Карта фрагментов</p>
+            <h2 id="details-title">Файл</h2>
+          </div>
+          <button id="details-close" class="icon-button" type="button" aria-label="Закрыть">×</button>
+        </div>
+        <div id="details-summary" class="details-summary"></div>
+        <div class="table-wrap">
+          <table class="chunk-table">
+            <thead>
+              <tr><th>#</th><th>Размер</th><th>SHA-256</th><th>Реплики</th></tr>
+            </thead>
+            <tbody id="chunks-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast hidden" role="status"></div>
+
+    <script type="module" src="js/demo.js"></script>
+  </body>
+</html>
