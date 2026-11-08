@@ -10,7 +10,7 @@ const initialFiles = [
     size_bytes: 482301,
     sha256: "a3f1c9e27b4d8a6f0c5e2d7b9a1f4c8e6d3b0a7f2c9e5d1b8a4f6c0e3d7b9a1",
     status: "encrypted",
-    chunk_count: 2,
+    chunk_count: 30,
     created_at: new Date(Date.now() - 2 * 86400000).toISOString(),
   },
   {
@@ -19,7 +19,7 @@ const initialFiles = [
     size_bytes: 1843200,
     sha256: "b7c2e4d9f1a8c6e3d0b5a7f9c2e4d8b1a6f3c9e0d7b4a2f8c5e1d9b3a7f0c6",
     status: "encrypted",
-    chunk_count: 7,
+    chunk_count: 113,
     created_at: new Date(Date.now() - 5 * 3600000).toISOString(),
   },
 ];
@@ -256,7 +256,7 @@ function submitUpload(event) {
       size_bytes: file.size,
       sha256: fakeHash(`${file.name}-${Date.now()}`),
       status: "encrypted",
-      chunk_count: Math.max(1, Math.ceil(file.size / (256 * 1024))),
+      chunk_count: Math.max(1, Math.ceil(file.size / (16 * 1024))),
       created_at: new Date().toISOString(),
     });
     resetUpload();
@@ -278,7 +278,7 @@ function chunksFor(file) {
     });
     return {
       idx,
-      size_bytes: idx === count - 1 ? Math.max(1024, file.size_bytes % (256 * 1024) || 1024) : 256 * 1024,
+      size_bytes: idx === count - 1 ? Math.max(1024, file.size_bytes % (16 * 1024) || 16 * 1024) : 16 * 1024,
       sha256: fakeHash(`${file.id}-${idx}`),
       replicas,
     };
