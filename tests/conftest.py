@@ -3,8 +3,13 @@ from __future__ import annotations
 import base64
 import os
 import shutil
+import sys
 import tempfile
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 TEST_ROOT = Path(tempfile.mkdtemp(prefix="dcloud-test-"))
 os.environ["DCLOUD_DATABASE_URL"] = f"sqlite:///{TEST_ROOT / 'test.db'}"
